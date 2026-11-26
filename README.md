@@ -95,7 +95,7 @@ Os arquivos SQL usam recursos nativos do PostgreSQL e foram preparados para exec
 7. `database/07_testes.sql` — verificações transacionais, encerradas com `ROLLBACK`.
 8. `database/08_demonstracao.sql` — consultas somente de leitura e demonstração opcional revertida com `ROLLBACK`.
 
-Os scripts 01–07 foram executados manualmente pelo usuário no banco local. O script 08 foi preparado nesta etapa e ainda não foi executado. A conexão inicial está implementada no backend sob o perfil `postgres`, mas não foi validada contra o servidor PostgreSQL nesta etapa. Consulte [database/README.md](database/README.md) para detalhes do modelo, das permissões e do teste manual de concorrência. Não configure credenciais reais nos scripts ou na documentação.
+Os scripts 01–07 foram executados manualmente pelo usuário no banco local. O script 08 foi revisado estaticamente na Etapa 16B, mas ainda não foi executado. A conexão inicial está implementada no backend sob o perfil `postgres`, mas não foi validada contra o servidor PostgreSQL nesta etapa. Consulte [database/README.md](database/README.md) para detalhes do modelo, das permissões e da demonstração acadêmica. Não configure credenciais reais nos scripts ou na documentação.
 
 ## Estado do desenvolvimento
 

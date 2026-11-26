@@ -78,3 +78,14 @@ Não foram alterados backend, frontend ou configuração Maven. Persistência Ja
 - Prompt integral da Etapa 15: [docs/prompts/etapa-15.md](prompts/etapa-15.md).
 - A modelagem desta etapa foi feita a partir do prompt da Etapa 15 e da inspeção do backend e da documentação do projeto.
 
+### Auditoria da Etapa 16B
+
+- Revisão estática dos scripts `database/01_tabelas.sql` a `database/08_demonstracao.sql`, sem conexão ou execução no PostgreSQL.
+- `08_demonstracao.sql` agora confirma a ausência de estatísticas enquanto a partida está em andamento e exige exatamente uma partida finalizada, uma vitória e zero derrotas após a trigger.
+- Antes do teste de imutabilidade, `v_rejeitou` é reinicializada; a demonstração também valida que o erro capturado é especificamente o da trigger e que estado e estatísticas permanecem inalterados.
+- `07_testes.sql` verifica os erros esperados e confirma que atualização/exclusão recusadas não alteram o resultado nem duplicam as estatísticas.
+- As consultas de privilégios em `08_demonstracao.sql` verificam explicitamente os privilégios efetivos de ambas as roles, independentemente das associações do usuário conectado.
+- Não foram executados testes SQL nesta auditoria; a execução no DBeaver continua pendente do usuário.
+- Ferramenta: OpenAI Codex. O identificador exato do modelo desta execução não foi disponibilizado no contexto; não foi inferido.
+- Prompt integral: [docs/prompts/etapa-16b.md](prompts/etapa-16b.md).
+

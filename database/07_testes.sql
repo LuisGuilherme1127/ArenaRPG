@@ -18,6 +18,8 @@ DECLARE
     v_vitorias bigint;
     v_derrotas bigint;
     v_tag text;
+    v_mensagem text;
+    v_estado text;
 BEGIN
     SELECT id INTO STRICT v_guerreiro FROM arena.personagens WHERE tipo = 'guerreiro' AND vida_maxima = 120 AND ataque = 20 AND defesa = 0 AND mana_maxima = 30 AND alcance = 1 AND movimento_maximo = 3 AND jogavel;
     SELECT id INTO STRICT v_mago FROM arena.personagens WHERE tipo = 'mago' AND vida_maxima = 80 AND ataque = 15 AND defesa = 0 AND mana_maxima = 100 AND alcance = 3 AND movimento_maximo = 3 AND jogavel;
@@ -120,6 +122,10 @@ BEGIN
     BEGIN
         UPDATE arena.partidas SET estado = 'vitoria' WHERE id = v_partida_vitoria;
     EXCEPTION WHEN check_violation THEN
+        GET STACKED DIAGNOSTICS v_mensagem = MESSAGE_TEXT;
+        IF v_mensagem NOT LIKE 'Partidas finalizadas sao imutaveis%' THEN
+            RAISE;
+        END IF;
         v_rejeitada := true;
     END;
     IF NOT v_rejeitada THEN RAISE EXCEPTION 'Atualizacao de partida finalizada foi permitida.'; END IF;
@@ -128,9 +134,20 @@ BEGIN
     BEGIN
         DELETE FROM arena.partidas WHERE id = v_partida_vitoria;
     EXCEPTION WHEN check_violation THEN
+        GET STACKED DIAGNOSTICS v_mensagem = MESSAGE_TEXT;
+        IF v_mensagem NOT LIKE 'Partidas finalizadas nao podem ser excluidas%' THEN
+            RAISE;
+        END IF;
         v_rejeitada := true;
     END;
     IF NOT v_rejeitada THEN RAISE EXCEPTION 'Exclusao de partida finalizada foi permitida.'; END IF;
+
+    SELECT estado INTO STRICT v_estado FROM arena.partidas WHERE id = v_partida_vitoria;
+    SELECT partidas_finalizadas, vitorias, derrotas INTO STRICT v_total, v_vitorias, v_derrotas
+      FROM arena.estatisticas_jogadores WHERE jogador_id = v_jogador;
+    IF v_estado <> 'vitoria' OR (v_total, v_vitorias, v_derrotas) IS DISTINCT FROM (2, 1, 1) THEN
+        RAISE EXCEPTION 'Ação recusada alterou uma partida finalizada ou duplicou estatísticas.';
+    END IF;
 
     INSERT INTO arena.partidas (jogador_id, personagem_id, inimigo_id)
     VALUES (v_jogador, v_guerreiro, v_goblin)

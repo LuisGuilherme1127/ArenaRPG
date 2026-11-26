@@ -64,9 +64,13 @@ O teste concorrente não está automatizado em `07_testes.sql`, pois requer duas
 
 As senhas de `arena_app` e `arena_consulta`, caso necessárias no ambiente local, devem ser definidas separadamente por uma conta administrativa no DBeaver. Não registre credenciais neste repositório.
 
-## Demonstração acadêmica (Etapa 16A)
+## Demonstração acadêmica (Etapas 16A e 16B)
 
-Abra `08_demonstracao.sql` no DBeaver e execute como SQL Script para consultar tabelas, constraints, índices, triggers, permissões efetivas, view e o catálogo com `JOIN`. O bloco final cria temporariamente um jogador e uma partida, tenta violar `UNIQUE`, `CHECK`, FK e a regra de que o inimigo deve ser Goblin, finaliza a partida para mostrar a contabilização pela trigger e tenta alterar uma partida concluída. O bloco termina com `ROLLBACK` e não deve ser confirmado com `COMMIT`.
+Conecte-se ao banco `arena_rpg` no DBeaver com uma conta administrativa/owner para que as consultas de metadados, a view e a demonstração transacional estejam disponíveis. Execute `08_demonstracao.sql` como SQL Script para consultar tabelas, constraints, índices, triggers, privilégios efetivos, view e o catálogo com `JOIN`. As consultas de privilégio nomeiam explicitamente `arena_app` e `arena_consulta`, sem depender de o usuário conectado pertencer a essas roles; elas também mostram que `arena_consulta` não lê o hash.
+
+O bloco final cria temporariamente um jogador e uma partida, tenta violar `UNIQUE`, `CHECK`, FK e a regra de que o inimigo deve ser Goblin, valida que partida aberta não tem linha de estatísticas, finaliza como vitória e confere os totais exatos (1 finalizada, 1 vitória, 0 derrotas). Em seguida, testa a imutabilidade, valida a mensagem específica da trigger e confirma que estado e estatísticas não mudaram. O bloco termina com `ROLLBACK`; execute-o inteiro como SQL Script e não confirme a transação com `COMMIT`. Se uma exceção interromper o script antes do `ROLLBACK`, execute `ROLLBACK;` manualmente na mesma sessão antes de fechá-la.
+
+Na auditoria estática da Etapa 16B nenhum script SQL foi executado. A execução demonstrativa pelo usuário no DBeaver continua pendente.
 
 O script é para demonstração, não é migração nem inicialização automática do Spring Boot.
 
