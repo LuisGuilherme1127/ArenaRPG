@@ -3,17 +3,30 @@ package com.arenarpg.backend.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.dao.DataAccessException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.arenarpg.backend.exception.ConflitoPartidaException;
+import com.arenarpg.backend.exception.CatalogoInconsistenteException;
 import com.arenarpg.backend.exception.PartidaNaoEncontradaException;
 import com.arenarpg.backend.exception.PersonagemNaoEncontradoException;
 import com.arenarpg.backend.exception.RequisicaoPartidaInvalidaException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
+    @ExceptionHandler(DataAccessException.class)
+    public ProblemDetail tratarFalhaNoBanco(DataAccessException exception) {
+        return problema(HttpStatus.SERVICE_UNAVAILABLE, "Banco indisponível",
+                "Não foi possível consultar o catálogo PostgreSQL.");
+    }
+
+    @ExceptionHandler(CatalogoInconsistenteException.class)
+    public ProblemDetail tratarCatalogoInconsistente(CatalogoInconsistenteException exception) {
+        return problema(HttpStatus.SERVICE_UNAVAILABLE, "Catálogo indisponível", exception.getMessage());
+    }
+
     @ExceptionHandler(PersonagemNaoEncontradoException.class)
     public ProblemDetail tratarPersonagemNaoEncontrado(PersonagemNaoEncontradoException exception) {
         ProblemDetail problema = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, exception.getMessage());

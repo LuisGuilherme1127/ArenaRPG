@@ -37,7 +37,7 @@ Conecte-se ao banco já existente `arena_rpg` usando uma conta administrativa. A
 
 Os scripts 01–04 usam `IF NOT EXISTS`, `CREATE OR REPLACE` ou substituição explícita das triggers para permitir repetição básica. Isso não é uma ferramenta de migração: se já houver tabelas com estrutura incompatível, revise-as manualmente em vez de supor que a repetição as atualizará. O script de permissões revoga privilégios nas relações do schema antes de conceder os acessos definidos neste projeto.
 
-Não execute esses scripts no banco local sem decidir fazê-lo. A implementação desta etapa não se conectou ao PostgreSQL. O script de testes foi preparado, mas não executado.
+Conforme informado pelo usuário na Etapa 16A, os scripts 01–07 já foram executados manualmente no banco local. Nenhum deles foi executado pelo agente nesta etapa. O novo script `08_demonstracao.sql` contém consultas de metadados e catálogo que não alteram dados; seu bloco opcional de demonstração usa transação e `ROLLBACK` para mostrar restrições e triggers sem deixar registros permanentes. Ele ainda não foi executado.
 
 ## Consultas de exemplo
 
@@ -63,4 +63,10 @@ O teste concorrente não está automatizado em `07_testes.sql`, pois requer duas
 5. Reverta a transação da sessão B e confira que o jogador recebeu exatamente uma vitória e nenhuma derrota.
 
 As senhas de `arena_app` e `arena_consulta`, caso necessárias no ambiente local, devem ser definidas separadamente por uma conta administrativa no DBeaver. Não registre credenciais neste repositório.
+
+## Demonstração acadêmica (Etapa 16A)
+
+Abra `08_demonstracao.sql` no DBeaver e execute como SQL Script para consultar tabelas, constraints, índices, triggers, permissões efetivas, view e o catálogo com `JOIN`. O bloco final cria temporariamente um jogador e uma partida, tenta violar `UNIQUE`, `CHECK`, FK e a regra de que o inimigo deve ser Goblin, finaliza a partida para mostrar a contabilização pela trigger e tenta alterar uma partida concluída. O bloco termina com `ROLLBACK` e não deve ser confirmado com `COMMIT`.
+
+O script é para demonstração, não é migração nem inicialização automática do Spring Boot.
 

@@ -11,7 +11,7 @@ Arena RPG é um RPG tático 2D de fantasia com batalhas por turnos em um tabulei
 
 - Frontend: HTML5, CSS3, JavaScript puro e Vite.
 - Backend: Java 21, Spring Boot e API REST.
-- Banco planejado: PostgreSQL. Os scripts estão em `database/`; a aplicação ainda não está conectada ao banco.
+- Banco de dados: PostgreSQL; scripts relacionais em `database/` e leitura JDBC opcional pelo perfil `postgres`.
 - Ferramentas: Maven Wrapper, npm e DBeaver para a futura execução dos scripts SQL.
 
 ## Funcionalidades atuais
@@ -21,6 +21,7 @@ Arena RPG é um RPG tático 2D de fantasia com batalhas por turnos em um tabulei
 - Ataque básico, habilidade especial, mana, turnos e comportamento automático do Goblin.
 - Resultado de vitória ou derrota e possibilidade de iniciar outra partida.
 - API REST para consultar personagens e executar partidas. O frontend usa o backend como autoridade para as ações de combate.
+- No perfil `postgres`, consulta de personagens e habilidades via Spring JDBC, além do endpoint `GET /api/status/database`.
 - Sprites opcionais com placeholders quando os arquivos de imagem ainda não foram adicionados.
 
 As partidas do backend são armazenadas somente em memória e se perdem ao reiniciar a aplicação.
@@ -67,6 +68,7 @@ Em outro terminal PowerShell:
 
 ```powershell
 cd backend
+$env:MAVEN_OPTS = "-Duser.home=$env:USERPROFILE -Dmaven.repo.local=$env:USERPROFILE\.m2\repository"
 .\mvnw.cmd spring-boot:run
 ```
 
@@ -91,12 +93,15 @@ Os arquivos SQL usam recursos nativos do PostgreSQL e foram preparados para exec
 5. `database/05_permissoes.sql` — roles com privilégios distintos para aplicação e consulta.
 6. `database/06_dados_iniciais.sql` — catálogo de personagens e habilidades.
 7. `database/07_testes.sql` — verificações transacionais, encerradas com `ROLLBACK`.
+8. `database/08_demonstracao.sql` — consultas somente de leitura e demonstração opcional revertida com `ROLLBACK`.
 
-Consulte [database/README.md](database/README.md) para detalhes do modelo, das permissões e do teste manual de concorrência. **Os scripts SQL ainda não foram executados no banco local e o backend ainda não está integrado ao PostgreSQL.** Não configure credenciais reais nos scripts ou na documentação.
+Os scripts 01–07 foram executados manualmente pelo usuário no banco local. O script 08 foi preparado nesta etapa e ainda não foi executado. A conexão inicial está implementada no backend sob o perfil `postgres`, mas não foi validada contra o servidor PostgreSQL nesta etapa. Consulte [database/README.md](database/README.md) para detalhes do modelo, das permissões e do teste manual de concorrência. Não configure credenciais reais nos scripts ou na documentação.
 
 ## Estado do desenvolvimento
 
-O frontend já consome a API Java para as batalhas. A camada de dados PostgreSQL está preparada em forma de scripts e documentação, mas ainda não foi aplicada nem conectada à aplicação. Cadastro/login, persistência de partidas e ranking real dependem de etapas futuras.
+O frontend já consome a API Java para as batalhas. Com o perfil `postgres`, a API passa a ler o catálogo de personagens e habilidades no banco; sem esse perfil, permanece no comportamento em memória. A conexão e o catálogo JDBC ainda precisam ser validados no ambiente PostgreSQL local. Partidas continuam em memória. Cadastro/login, persistência de partidas e ranking real dependem de etapas futuras.
+
+Para configurar e iniciar a API com o perfil PostgreSQL, siga [docs/integracao-postgresql.md](docs/integracao-postgresql.md). As variáveis `DB_URL`, `DB_USERNAME` e `DB_PASSWORD` são fornecidas localmente, sem senhas versionadas.
 
 Documentação acadêmica e rastreabilidade do uso de IA estão em `docs/`, incluindo os prompts registrados em `docs/prompts/`. Consulte também [docs/requisitos-banco-dados.md](docs/requisitos-banco-dados.md) e [docs/integracao-frontend-backend.md](docs/integracao-frontend-backend.md).
 
