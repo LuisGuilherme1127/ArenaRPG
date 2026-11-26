@@ -1,0 +1,98 @@
+:root {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  color: #e8e7e1;
+  background: #080d18;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-optical-sizing: auto;
+  font-weight: 400;
+
+  --navy: #080d18;
+  --navy-soft: #0d1524;
+  --panel: #101a2b;
+  --gold: #d3b576;
+  --gold-bright: #f1dba7;
+  --muted: #8992a0;
+  --serif: Georgia, 'Times New Roman', serif;
+}
+
+* { box-sizing: border-box; }
+
+html { min-width: 320px; min-height: 100%; background: var(--navy); }
+
+body { min-width: 320px; min-height: 100vh; margin: 0; }
+
+body::selection { color: #10131b; background: var(--gold-bright); }
+
+button, a { font: inherit; }
+
+button { color: inherit; }
+
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--gold-bright);
+  outline-offset: 4px;
+}
+
+button:focus:not(:focus-visible), a:focus:not(:focus-visible) { outline: none; }
+
+.screen {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-height: 100svh;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 50% 48%, rgb(32 48 75 / 30%), transparent 52%),
+    linear-gradient(155deg, #0b1322 0%, var(--navy) 56%, #090e18 100%);
+}
+
+.screen::before {
+  position: absolute;
+  z-index: -1;
+  pointer-events: none;
+  content: '';
+  inset: 0;
+  opacity: .2;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+}
+
+.ambient { position: absolute; z-index: -1; pointer-events: none; border-radius: 50%; filter: blur(1px); }
+.ambient-one { top: 13%; left: -220px; width: 450px; height: 450px; border: 1px solid rgb(211 181 118 / 9%); box-shadow: 0 0 100px rgb(25 46 78 / 32%) inset; }
+.ambient-two { right: -280px; bottom: 4%; width: 560px; height: 560px; border: 1px solid rgb(211 181 118 / 7%); }
+
+.topbar {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(100% - 80px, 1280px);
+  min-height: 82px;
+  margin: 0 auto;
+  border-bottom: 1px solid rgb(205 190 154 / 12%);
+}
+
+.brand-mark { display: inline-flex; align-items: center; gap: 12px; color: #e6e1d4; text-decoration: none; }
+.brand-button { padding: 0; border: 0; background: transparent; cursor: pointer; }
+.brand-shield { display: grid; width: 34px; height: 39px; place-items: center; border: 1px solid rgb(211 181 118 / 70%); color: var(--gold-bright); font: 17px var(--serif); clip-path: polygon(50% 0, 100% 15%, 94% 72%, 50% 100%, 6% 72%, 0 15%); background: rgb(211 181 118 / 5%); }
+.brand-name { font: 13px var(--serif); letter-spacing: 2.4px; }
+.brand-name b { color: var(--gold); font-weight: 400; }
+.topbar-note { display: inline-flex; align-items: center; gap: 12px; color: #838a96; font-size: 9px; letter-spacing: 1.5px; }
+.topbar-note i { width: 3px; height: 3px; border-radius: 50%; background: var(--gold); }
+
+.eyebrow { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 0; color: var(--gold); font-size: 9px; font-weight: 600; letter-spacing: 2.8px; }
+.eyebrow span { width: 25px; height: 1px; background: linear-gradient(90deg, transparent, rgb(211 181 118 / 70%)); }
+.eyebrow span:last-child { transform: rotate(180deg); }
+
+.icon { display: block; width: 21px; height: 21px; flex: 0 0 auto; }
+
+.sprite-frame { position: relative; }
+.sprite-image { display: block; max-width: 100%; max-height: 100%; object-fit: contain; image-rendering: auto; user-select: none; pointer-events: none; }
+.sprite-image[data-pixel-art="true"] { image-rendering: pixelated; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}

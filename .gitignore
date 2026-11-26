@@ -1,0 +1,73 @@
+# Sistema operacional
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Configuracoes locais de IDE e editor
+/.idea/
+/.vscode/
+**/.idea/
+**/.vscode/
+*.iml
+*.ipr
+*.iws
+*.suo
+
+# Variaveis de ambiente, credenciais e chaves locais
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+**/application-local.properties
+**/application-*.local.properties
+**/application-secrets.properties
+**/application-credentials.properties
+**/*credentials*
+**/*secrets*
+**/.npmrc
+**/settings.xml
+**/.pgpass
+**/pg_service.conf
+**/credentials.*
+**/secrets.*
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Dependencias, builds e caches do Java/Maven
+**/node_modules/
+**/dist/
+**/dist-ssr/
+**/target/
+**/build/
+**/out/
+**/.gradle/
+*.class
+
+# Vite, testes e caches comuns
+**/.vite/
+**/.cache/
+**/__pycache__/
+**/.pytest_cache/
+**/.nyc_output/
+**/.turbo/
+**/coverage/
+**/reports/
+
+# Logs e arquivos temporarios
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+*.tmp
+*.temp
+*.swp
+*.swo
+*.local
+*.local.*
+
